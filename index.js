@@ -24,11 +24,12 @@ app.post('/addExpense', async (req, res) => {
         }
         expensesJson = JSON.parse(expenses);
         if (expensesJson['expenseType'] === "debit") {
-            expensesJson['plantBalance'] = parseFloat(expensesJson['plantBalance']) - parseFloat(expensesJson['expenseAmount'])
+            expensesJson['plantBalance'] = expensesJson['plantBalance'] - expenseBody['expenseAmount']
         }
         else {
-            expensesJson['plantBalance'] = parseFloat(expensesJson['plantBalance']) + parseFloat(expensesJson['expenseAmount'])
+            expensesJson['plantBalance'] = expensesJson['plantBalance'] + expenseBody['expenseAmount']
         }
+        expenseBody["balance"] = expensesJson["plantBalance"];
         expensesJson["plant"].push(expenseBody);
         await client.set("expenses", JSON.stringify(expensesJson));
         await client.disconnect();
@@ -65,6 +66,10 @@ app.get("/getAllCat", async (req, res) => {
     let expenses = await client.get('expenses');
     let expensesJson = JSON.parse(expenses);
     let categories = Object.keys(expensesJson);
+    let idx = categories.indexOf("plantBalance");
+    if(idx>-1){
+        categories.splice(idx,1);
+    }
     res.send(categories);
     await client.disconnect();
 });
