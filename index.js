@@ -19,11 +19,16 @@ app.post('/addExpense', async (req, res) => {
     if (expenseBody['expenseFor'] === "plant") {
         let expenses = await client.get('expenses');
         if (expenses == null) {
-            let obj = { "plant": [] };
+            let obj = { "plant": [], "plantBalance": expenseBody['expenseAmount'] };
             expenses = JSON.stringify(obj);
         }
         expensesJson = JSON.parse(expenses);
-        console.log(expensesJson);
+        if (expensesJson['expenseType'] === "debit") {
+            expensesJson['plantBalance'] = parseFloat(expensesJson['plantBalance']) - parseFloat(expensesJson['expenseAmount'])
+        }
+        else {
+            expensesJson['plantBalance'] = parseFloat(expensesJson['plantBalance']) + parseFloat(expensesJson['expenseAmount'])
+        }
         expensesJson["plant"].push(expenseBody);
         await client.set("expenses", JSON.stringify(expensesJson));
         await client.disconnect();
