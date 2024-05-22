@@ -78,7 +78,11 @@ app.get("/getExpDetails/:cat", async(req, res) => {
     await client.connect();
     let expenses = await client.get('expenses');
     let expensesJson = JSON.parse(expenses);
-    let catExpense = expensesJson[req.params.cat];
+    let catExpense = {};
+    if(req.params.cat === 'plant'){
+        catExpense['plantBalance'] = expensesJson['plantBalance']
+    }
+    catExpense['records'] = expensesJson[req.params.cat];
     res.send(catExpense);
     await client.disconnect();
 });
