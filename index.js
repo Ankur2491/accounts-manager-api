@@ -23,7 +23,7 @@ app.post('/addExpense', async (req, res) => {
             expenses = JSON.stringify(obj);
         }
         expensesJson = JSON.parse(expenses);
-        if (expensesJson['expenseType'] === "debit") {
+        if (expenseBody['expenseType'] === "debit") {
             expensesJson['plantBalance'] = expensesJson['plantBalance'] - parseFloat(expenseBody['expenseAmount'])
         }
         else {
