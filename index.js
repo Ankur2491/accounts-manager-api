@@ -24,10 +24,10 @@ app.post('/addExpense', async (req, res) => {
         }
         expensesJson = JSON.parse(expenses);
         if (expensesJson['expenseType'] === "debit") {
-            expensesJson['plantBalance'] = expensesJson['plantBalance'] - expenseBody['expenseAmount']
+            expensesJson['plantBalance'] = expensesJson['plantBalance'] - parseFloat(expenseBody['expenseAmount'])
         }
         else {
-            expensesJson['plantBalance'] = expensesJson['plantBalance'] + expenseBody['expenseAmount']
+            expensesJson['plantBalance'] = expensesJson['plantBalance'] + parseFloat(expenseBody['expenseAmount'])
         }
         expenseBody["balance"] = expensesJson["plantBalance"];
         expensesJson["plant"].push(expenseBody);
