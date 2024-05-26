@@ -98,10 +98,10 @@ app.post("/deleteRecords", async(req, res)=> {
     for(let exp of existingArr) {
         if(expenseArr.includes(exp.expTransId)){
             if(exp.expenseType === "debit") {
-            plantBalance += exp.expenseAmount;
+            plantBalance += parseFloat(exp.expenseAmount);
             }
             else {
-                plantBalance -= exp.expenseAmount;
+                plantBalance -= parseFloat(exp.expenseAmount);
             }
             continue;
         }
