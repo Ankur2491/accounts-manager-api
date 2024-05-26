@@ -114,10 +114,10 @@ app.post("/deleteRecords", async(req, res)=> {
     await client.set("expenses", JSON.stringify(expensesJson));
     await client.disconnect();
     if(expenseArr.length==1){
-    res.send({"status": "ok", "message": "1 record successfully deleted!"});
+    res.send({"status": "ok", "message": "1 record successfully deleted!", "plantBalance": plantBalance});
     }
     else {
-        res.send({"status": "ok", "message": `${expenseArr.length} records successfully deleted!`});
+        res.send({"status": "ok", "message": `${expenseArr.length} records successfully deleted!`, "plantBalance": plantBalance});
     }
 });
 
