@@ -87,6 +87,35 @@ app.get("/getExpDetails/:cat", async(req, res) => {
     await client.disconnect();
 });
 
+app.post("/deleteRecords", async(req, res)=> {
+    const expenseArr = req.body.items;
+    await client.connect();
+    let expenses = await client.get('expenses');
+    let expensesJson = JSON.parse(expenses);
+    let existingArr = expensesJson['plant'];
+    let plantBalance = expensesJson['plantBalance']
+    let finalArr = [];
+    for(let exp of existingArr) {
+        if(expenseArr.includes(exp.expTransId)){
+            plantBalance -= exp.expenseAmount;
+            continue;
+        }
+        else {
+            finalArr.push(exp);
+        }
+    }
+    expensesJson['plant'] = finalArr;
+    expensesJson['plantBalance'] = plantBalance;
+    await client.set("expenses", JSON.stringify(expensesJson));
+    await client.disconnect();
+    if(expenseArr.length==1){
+    res.send({"status": "ok", "message": "1 record successfully deleted!"});
+    }
+    else {
+        res.send({"status": "ok", "message": `${expenseArr.length} records successfully deleted!`});
+    }
+});
+
 app.listen(4001, () => {
     console.log('listening on port 4001');
 })
