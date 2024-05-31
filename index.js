@@ -40,7 +40,7 @@ app.post('/addExpense', async (req, res) => {
             let counter = 0;
             for (let idx in exp) {
                 if (moment(new Date(exp[idx]['expenseDate'])) > moment(new Date(expenseBody['expenseDate']))) {
-                    let newTransId = parseFloat(prevExp['expTransId']) + 0.1;
+                    let newTransId = parseFloat(prevExp['expTransId']) + 0.01;
                     expenseBody['expTransId'] = newTransId;
                     counter = idx;
                     break;
