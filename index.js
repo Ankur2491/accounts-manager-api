@@ -56,6 +56,12 @@ app.post('/addExpense', async (req, res) => {
                 for (let i = 0; i < counter; i++) {
                     finalArr.push(exp[i]);
                 }
+                if (expenseBody['expenseType'] === 'credit') {
+                    expenseBody['balance'] = parseFloat(expenseBody['expenseAmount'])+exp[counter-1]['balance'];
+                }
+                else {
+                    expenseBody['balance'] = exp[counter-1]['balance'] - parseFloat(expenseBody['expenseAmount']);
+                }
                 finalArr.push(expenseBody);
                 for (let j = counter; j < exp.length; j++) {
                     let modExp = exp[j];
