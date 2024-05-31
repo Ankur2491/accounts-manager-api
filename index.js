@@ -2,6 +2,7 @@ const redis = require('redis');
 var express = require('express');
 var cors = require('cors');
 var bodyParser = require('body-parser')
+var moment = require('moment')
 var jsonParser = bodyParser.json()
 var app = express();
 app.use(jsonParser);
@@ -29,8 +30,40 @@ app.post('/addExpense', async (req, res) => {
         else {
             expensesJson['plantBalance'] = expensesJson['plantBalance'] + parseFloat(expenseBody['expenseAmount'])
         }
-        expenseBody["balance"] = expensesJson["plantBalance"];
-        expensesJson["plant"].push(expenseBody);
+        if (!expenseBody['isBackDateTrans']) {
+            expenseBody["balance"] = expensesJson["plantBalance"];
+            expensesJson["plant"].push(expenseBody);
+        }
+        else {
+            let prevExp;
+            let exp = expensesJson['plant']
+            let counter = 0;
+            for (let idx in exp) {
+                if (moment(new Date(exp[idx]['expenseDate'])) > moment(new Date(expenseBody['expenseDate']))) {
+                    let newTransId = parseFloat(prevExp['expTransId']) + 0.1;
+                    expenseBody['expTransId'] = newTransId;
+                    counter = idx;
+                    break;
+                }
+                prevExp = exp[idx];
+            }
+            let finalArr = [];
+            for (let i = 0; i < counter; i++) {
+                finalArr.push(exp[i]);
+            }
+            finalArr.push(expenseBody);
+            for (let j = idx; j < exp.length; j++) {
+                let modExp = exp[j];
+                if (expenseBody['expenseType'] === 'credit') {
+                    modExp["balance"] = modExp["balance"] + expenseBody['expenseAmount'];
+                }
+                else {
+                    modExp["balance"] = modExp["balance"] - expenseBody['expenseAmount'];
+                }
+                finalArr.push(modExp);
+            }
+            expensesJson["plant"] = finalArr;
+        }
         await client.set("expenses", JSON.stringify(expensesJson));
         await client.disconnect();
         res.send("ok");
