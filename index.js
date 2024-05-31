@@ -47,22 +47,28 @@ app.post('/addExpense', async (req, res) => {
                 }
                 prevExp = exp[idx];
             }
-            let finalArr = [];
-            for (let i = 0; i < counter; i++) {
-                finalArr.push(exp[i]);
+            if (counter == 0) {
+                expenseBody["balance"] = expensesJson["plantBalance"];
+                expensesJson["plant"].push(expenseBody);
             }
-            finalArr.push(expenseBody);
-            for (let j = counter; j < exp.length; j++) {
-                let modExp = exp[j];
-                if (expenseBody['expenseType'] === 'credit') {
-                    modExp["balance"] = modExp["balance"] + parseFloat(expenseBody['expenseAmount']);
+            else {
+                let finalArr = [];
+                for (let i = 0; i < counter; i++) {
+                    finalArr.push(exp[i]);
                 }
-                else {
-                    modExp["balance"] = modExp["balance"] - parseFloat(expenseBody['expenseAmount']);
+                finalArr.push(expenseBody);
+                for (let j = counter; j < exp.length; j++) {
+                    let modExp = exp[j];
+                    if (expenseBody['expenseType'] === 'credit') {
+                        modExp["balance"] = modExp["balance"] + parseFloat(expenseBody['expenseAmount']);
+                    }
+                    else {
+                        modExp["balance"] = modExp["balance"] - parseFloat(expenseBody['expenseAmount']);
+                    }
+                    finalArr.push(modExp);
                 }
-                finalArr.push(modExp);
+                expensesJson["plant"] = finalArr;
             }
-            expensesJson["plant"] = finalArr;
         }
         await client.set("expenses", JSON.stringify(expensesJson));
         await client.disconnect();
