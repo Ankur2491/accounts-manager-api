@@ -156,13 +156,15 @@ app.post("/retrieveHitWords", async(req, res) => {
     let freqObject = {};
     for(let desc of allDescription) {
         let tokens = tokenizer.tokenize(desc);
-        for(let token of tokens) {
-            if(!stopWords.some(word=>word.toLowerCase() === token.toLowerCase())) {
-                if(freqObject[token]) {
-                freqObject[token] +=1
-                }
-                else {
-                    freqObject[token] = 1
+        for (let token of tokens) {
+            if (token.length() > 2) {
+                if (!stopWords.some(word => word.toLowerCase() === token.toLowerCase())) {
+                    if (freqObject[token]) {
+                        freqObject[token] += 1
+                    }
+                    else {
+                        freqObject[token] = 1
+                    }
                 }
             }
         }
