@@ -170,6 +170,7 @@ app.post("/retrieveHitWords", async(req, res) => {
         }
     }
     res.send(freqObject);
+    await client.disconnect();
 });
 
 // app.post("/deleteRecords", async (req, res) => {
