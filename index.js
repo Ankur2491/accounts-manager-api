@@ -11,10 +11,10 @@ app.use(cors());
 const stopWords = ["call", "upon", "still", "nevertheless", "down", "every", "forty", "'re", "always", "whole", "side", "n't", "now", "however", "an", "show", "least", "give", "below", "did", "sometimes", "which", "'s", "nowhere", "per", "hereupon", "yours", "she", "moreover", "eight", "somewhere", "within", "whereby", "few", "has", "so", "have", "for", "noone", "top", "were", "those", "thence", "eleven", "after", "no", "'ll", "others", "ourselves", "themselves", "though", "that", "nor", "just", "'s", "before", "had", "toward", "another", "should", "herself", "and", "these", "such", "elsewhere", "further", "next", "indeed", "bottom", "anyone", "his", "each", "then", "both", "became", "third", "whom", "'ve", "mine", "take", "many", "anywhere", "to", "well", "thereafter", "besides", "almost", "front", "fifteen", "towards", "none", "be", "herein", "two", "using", "whatever", "please", "perhaps", "full", "ca", "we", "latterly", "here", "therefore", "us", "how", "was", "made", "the", "or", "may", "'re", "namely", "'ve", "anyway", "amongst", "used", "ever", "of", "there", "than", "why", "really", "whither", "in", "only", "wherein", "last", "under", "own", "therein", "go", "seems", "'m", "wherever", "either", "someone", "up", "doing", "on", "rather", "ours", "again", "same", "over", "'s", "latter", "during", "done", "'re", "put", "'m", "much", "neither", "among", "seemed", "into", "once", "my", "otherwise", "part", "everywhere", "never", "myself", "must", "will", "am", "can", "else", "although", "as", "beyond", "are", "too", "becomes", "does", "a", "everyone", "but", "some", "regarding", "'ll", "against", "throughout", "yourselves", "him", "'d", "it", "himself", "whether", "move", "'m", "hereafter", "re", "while", "whoever", "your", "first", "amount", "twelve", "serious", "other", "any", "off", "seeming", "four", "itself", "nothing", "beforehand", "make", "out", "very", "already", "various", "until", "hers", "they", "not", "them", "where", "would", "since", "everything", "at", "together", "yet", "more", "six", "back", "with", "thereupon", "becoming", "around", "due", "keep", "somehow", "n't", "across", "all", "when", "i", "empty", "nine", "five", "get", "see", "been", "name", "between", "hence", "ten", "several", "from", "whereupon", "through", "hereby", "'ll", "alone", "something", "formerly", "without", "above", "onto", "except", "enough", "become", "behind", "'d", "its", "most", "n't", "might", "whereas", "anything", "if", "her", "via", "fifty", "is", "thereby", "twenty", "often", "whereafter", "their", "also", "anyhow", "cannot", "our", "could", "because", "who", "beside", "by", "whence", "being", "meanwhile", "this", "afterwards", "whenever", "mostly", "what", "one", "nobody", "seem", "less", "do", "'d", "say", "thus", "unless", "along", "yourself", "former", "thru", "he", "hundred", "three", "sixty", "me", "sometime", "whose", "you", "quite", "'ve", "about", "even"]
 var client = redis.createClient({
     socket: {
-        host: "redis-13985.c90.us-east-1-3.ec2.redns.redis-cloud.com",
-        port: 13985
+        host: "redis-12121.c266.us-east-1-3.ec2.cloud.redislabs.com",
+        port: 12121
     }
-    , password: "IXiIq7sVwjasWzCPBcx89k6wG2CRuuIx"
+    , password: "YOBLQLupdba9pYHQ5hl9OJMhOKMpHonR"
 });
 app.post('/addExpense', async (req, res) => {
     const expenseBody = req.body;
@@ -101,13 +101,13 @@ app.post('/addExpense', async (req, res) => {
    
 })
 
-// app.get("/testDB", async (req, res) => {
-//     await client.connect();
-//     let obj = { "plant": [{ "expenseFor": "plant", "expenseType": "credit", "expenseName": "starting balance", "expenseAmount": 3083, "expenseDate": "29-May-2024", "balance": 3083, "expTransId": 1 }], "plantBalance": 3083 }
-//     await client.set('expenses', JSON.stringify(obj));
-//     res.send("ok");
-//     await client.disconnect();
-// });
+app.get("/testDB", async (req, res) => {
+    await client.connect();
+    let obj = { "plant": [{ "expenseFor": "plant", "expenseType": "credit", "expenseName": "starting balance", "expenseAmount": 3083, "expenseDate": "29-May-2024", "balance": 3083, "expTransId": 1 }], "plantBalance": 3083 }
+    await client.set('expenses', JSON.stringify(obj));
+    res.send("ok");
+    await client.disconnect();
+});
 
 // app.get("/testDelete", async (req, res) => {
 //     await client.connect();
