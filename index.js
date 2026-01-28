@@ -101,13 +101,13 @@ app.post('/addExpense', async (req, res) => {
    
 })
 
-app.get("/testDB", async (req, res) => {
-    await client.connect();
-    let obj = { "plant": [{ "expenseFor": "plant", "expenseType": "credit", "expenseName": "starting balance", "expenseAmount": 3083, "expenseDate": "29-May-2024", "balance": 3083, "expTransId": 1 }], "plantBalance": 3083 }
-    await client.set('expenses', JSON.stringify(obj));
-    res.send("ok");
-    await client.disconnect();
-});
+// app.get("/testDB", async (req, res) => {
+//     await client.connect();
+//     let obj = { "plant": [{ "expenseFor": "plant", "expenseType": "credit", "expenseName": "starting balance", "expenseAmount": 3083, "expenseDate": "29-May-2024", "balance": 3083, "expTransId": 1 }], "plantBalance": 3083 }
+//     await client.set('expenses', JSON.stringify(obj));
+//     res.send("ok");
+//     await client.disconnect();
+// });
 
 // app.get("/testDelete", async (req, res) => {
 //     await client.connect();
